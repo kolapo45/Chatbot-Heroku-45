@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JQuery Chatbot</title>
+
+	<script type="text/javascript" src = "js/jquery.min.js"></script> 
+
+	<style type = "text/css">
+
+		body{
+			font-family:arial, sans-serif;  
+			margin:0;
+			background-color:#f2f2f2;
+		}
+		#header{
+			width:100%;
+			height:60px;
+			background-color:#333;
+			box-shadow:0px 4px 2px #333;
+
+		}
+
+		#header>h1{
+			padding:12px;
+			width:1024px;
+			margin:0px auto;
+			color:white;
+		}
+
+		#container{
+			width:1024px;
+			min-height: 500px; 
+			margin:0px auto;
+			margin-top:10px; 
+			background-color: white;
+			border: 1px solid #333; 
+			overflow: scroll;  
+		} 
+
+			#controls{
+
+			 width:1024px; 
+			margin:0px auto;
+
+			}
+
+			textarea{
+				resize:none;
+				width:940px; 
+			}
+			#send{
+				font-size:24px;
+				position:absolute ;
+			}
+
+			.username{
+
+				color:blue;
+				font-weight: bold;
+
+			}
+
+				.bot{
+				color:green;
+				font-weight: bold;
+
+		}
+
+
+	</style>
+	</head>
+<body>
+
+	<script type="text/javascript">
+
+		var username = "";
+ 
+		function send_message(message){
+
+			var prevState = $("#container").html();  
+
+
+			if (prevState.length > 3){
+    		prevState = prevState + "<br>"; 
+    		// usin te lent of te empty div element, if te lent is greater tan 3, aline break will be added 
+
+    	}
+
+    	$("#container").html(prevState + "<span class = 'current_message'>" + "<span class = 'bot' > Chatbot: </span>"+ message + "</span>");
+    	// from the container div below
+
+    	$ (".current_message").hide();
+    	$ (".current_message").delay(500).fadeIn();
+    	$ (".current_message").removeClass("current_message");
+
+    	//little animation for delay
+
+
+
+		}
+
+
+
+		function get_username (){
+			send_message ("Hello, what is your name?" );
+		}
+		function ai(message){
+
+			if (username.length<3){
+
+				username=message;
+				send_message ("Nice to meet you, " + username + " , how are you doing?" );
+			}
+
+if (message.indexOf("how are you?")>=0){
+	send_message ("Thanks, I am good!");
+}
+
+
+if (message.indexOf("time?")>=0){
+	var date = new Date ();
+	var h = date.getHours ();
+	var m = date.getMinutes();
+	send_message ("Current time is: "+h+":" + m);
+
+		}
+
+		//put new functionailty here
+
+
+
+}
+	$(function(){
+
+		get_username();
+
+		$ ("#textbox").keypress(function(event){
+
+			if ( event.which == 13){
+
+				if ( $("#enter").prop ("checked") ){
+
+					$("#send").click();
+					event.preventDefault();
+ 
+
+			}		
+
+		}	
+
+	});	
+
+// to make te text o into the box when a messae is entered. //
+    $("#send").click(function(){
+
+    	var username = "<span class = 'username' = >You: </span>"; 
+
+    	var newMessage = $("#textbox"). val();
+
+    	$("#textbox").val ("");
+
+    	 //took it from here
+    	// from the container div below
+
+    	var prevState = $("#container"). html();
+    	if (prevState.length > 3){
+    		prevState = prevState + "<br>";
+    	}
+
+    	$("#container").html(prevState + username + newMessage);
+
+    	$("#container").scrollTop($("#container").prop ("scrollHeight"));
+
+
+    	ai (newMessage);
+
+    	//scroll top function on te container
+
+	});
+
+    });
+
+	
+</script>
+
+<div id = "header"> 
+		<h1> JQuery Chatbot</h1> 
+	</div>
+<div id = "container">
+
+</div>
+
+<div id = "controls">
+	<textarea id = "textbox" placeholder = "Enter your message here..."></textarea>
+	<button id = "send">Send</button>
+	<br>
+	<input type="checkbox" id = "enter"/>
+	<label>Send on enter</label>
+</div> 
+
+</body>
+</html>
